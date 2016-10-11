@@ -26,3 +26,10 @@ class Manager():
 				m_size = size
 				m_index = i
 		return m_index
+
+	def display(self):
+		info = 'Worker(pid = {}) remain {}\n'
+		temp = str()
+		for i, p in enumerate(self._p_lists):
+			temp += info.format(p.pid, self._t_lists[i].qsize())
+		print(temp)
