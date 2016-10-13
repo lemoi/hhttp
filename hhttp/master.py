@@ -19,12 +19,12 @@ SELECT.register(SOCK, selectors.EVENT_READ)
 M = Manager(CPU_NUM)
 
 while True:
-	events = SELECT.select()
-	for key, _ in events:
-		if key.fileobj is SOCK:
-			conn, addr = SOCK.accept()
-			conn.setblocking(False)
-			SELECT.register(conn, selectors.EVENT_READ)
-		else:
-			SELECT.unregister(key.fd)
-			M.put(key.fileobj)
+    events = SELECT.select()
+    for key, _ in events:
+        if key.fileobj is SOCK:
+            conn, addr = SOCK.accept()
+            conn.setblocking(False)
+            SELECT.register(conn, selectors.EVENT_READ)
+        else:
+            SELECT.unregister(key.fd)
+            M.put(key.fileobj)
