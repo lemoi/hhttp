@@ -16,7 +16,7 @@ SOCK.listen(100)
 SOCK.setblocking(False)
 SELECT.register(SOCK, selectors.EVENT_READ)
 
-M = Manager(CPU_NUM)
+M = Manager(1)
 
 while True:
     events = SELECT.select()
