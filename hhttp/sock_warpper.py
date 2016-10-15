@@ -64,7 +64,7 @@ class SockWarpper:
 
     def write_in_stream(self, stream):
         for data in iter(stream):
-            self._sock.sendall(stream)
+            self._sock.sendall(data)
 
     def write_data_in_stream(self, data):
         size = self.DEFAULT_WRITE_SIZE

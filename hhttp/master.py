@@ -1,5 +1,6 @@
 import os, sys, socket, selectors
 from manager import Manager
+import consts
 
 #the most efficient select implementation available on the current platform
 SELECT = selectors.DefaultSelector()
@@ -16,7 +17,7 @@ SOCK.listen(100)
 SOCK.setblocking(False)
 SELECT.register(SOCK, selectors.EVENT_READ)
 
-M = Manager(1)
+M = Manager(CPU_NUM)
 
 while True:
     events = SELECT.select()

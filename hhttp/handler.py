@@ -22,7 +22,7 @@ class BaseHandler(ABC):
         if not self.sw._write_buffer:
             raise Exception('the header has not set')
         self.sw.flush()
-        if data:
+        if data != None:
             self.sw.write(data)
             self.sw.flush()
         elif stream:
@@ -69,12 +69,22 @@ class StaticFileHandler(BaseHandler):
         path = pathlib.join(self.root, req.req_path[1:])
         print(path)
         if pathlib.isfile(path):
-            with open(path, 'rb') as fp:
-                data = fp.read()
             res = ResponseHeaderGenerator(200)
             ext = path[path.rfind('.')+1:]
             res['content-type'] = MIME_TYPES[ext]
             self.send_header_data(res.to_bytes())
-            self.send_body_data(data)
+            with open(path, 'rb') as fp:
+                if pathlib.getsize(path) > 1024 * 1024:
+                    def rd():
+                        while True:
+                            data = fp.read(1024)
+                            if not data:
+                                break
+                            yield data
+                    self.send_body_data(stream = rd())
+                else:
+                    self.send_body_data(fp.read())
         else:
-            raise Exception()
+            res = ResponseHeaderGenerator(404)
+            self.send_header_data(res.to_bytes())
+            self.send_body_data('')

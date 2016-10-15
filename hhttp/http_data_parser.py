@@ -1,4 +1,4 @@
-from consts import HTTP_VERSION, HTTP_CRLF
+from consts import HTTP_VERSION, HTTP_CRLF, HTTP_STATUS_CODE
 
 class RequestHeaderParser:
     def __init__(self, data):
@@ -41,7 +41,7 @@ class ResponseHeaderGenerator:
     def __init__(self, status_code):
         self.status_code = status_code
         self.headers = {}
-        self.status_info = 'OK'
+        self.status_info =  HTTP_STATUS_CODE[str(status_code)]
 
     def __setitem__(self, name, value):
         name = '-'.join(part.capitalize() for part in name.split('-'))
