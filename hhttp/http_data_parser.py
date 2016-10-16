@@ -1,4 +1,4 @@
-from consts import HTTP_VERSION, HTTP_CRLF, HTTP_STATUS_CODE
+from .consts import HTTP_VERSION, HTTP_CRLF, HTTP_STATUS_CODE, SERVER_NAME
 
 class RequestHeaderParser:
     def __init__(self, data):
@@ -40,7 +40,7 @@ class RequestHeaderParser:
 class ResponseHeaderGenerator:
     def __init__(self, status_code):
         self.status_code = status_code
-        self.headers = {}
+        self.headers = {'Server': SERVER_NAME}
         self.status_info =  HTTP_STATUS_CODE[str(status_code)]
 
     def __setitem__(self, name, value):

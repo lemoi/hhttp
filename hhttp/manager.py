@@ -1,5 +1,5 @@
 from multiprocessing import Process, Queue
-from worker import Worker
+from .worker import Worker
 
 class Manager():
 

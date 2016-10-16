@@ -1,12 +1,13 @@
 from abc import ABC, abstractmethod
 import multiprocessing
-from http_data_parser import RequestHeaderParser, ResponseHeaderGenerator
-from sock_warpper import SockWarpper
+from .http_data_parser import RequestHeaderParser, ResponseHeaderGenerator
+from .sock_warpper import SockWarpper
 
 class BaseHandler(ABC):
 
     def do_with(self, sock):
         self.sw = SockWarpper(sock)
+        self.req = RequestHeaderParser(self.get_header_data())
         self.handle()
 
     def get_header_data(self):
@@ -60,13 +61,13 @@ class WSGIHandler(BaseHandler):
 
 class StaticFileHandler(BaseHandler):
     def __init__(self):
-        self.root = '../test/static'
+        from .consts import CONFIG_PARAM
+        self.root = CONFIG_PARAM['root']
 
     def handle(self):
-        from consts import MIME_TYPES
-        req = RequestHeaderParser(self.get_header_data())
+        from .consts import MIME_TYPES
         import os.path as pathlib
-        path = pathlib.join(self.root, req.req_path[1:])
+        path = pathlib.join(self.root, self.req.req_path[1:])
         print(path)
         if pathlib.isfile(path):
             res = ResponseHeaderGenerator(200)
