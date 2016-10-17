@@ -11,6 +11,7 @@ AF = socket.AF_INET #AF_INET6
 HOST = CONFIG_PARAM['host']
 PORT = int(CONFIG_PARAM['port'])
 
+
 def run():
     SOCK = socket.socket(AF, socket.SOCK_STREAM)
     SOCK.bind((HOST, PORT))
@@ -18,6 +19,7 @@ def run():
     SOCK.setblocking(False)
     SELECT.register(SOCK, selectors.EVENT_READ)
     M = Manager(CPU_NUM)
+    print('hhttp is running')
     while True:
         events = SELECT.select()
         for key, _ in events:
